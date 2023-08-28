@@ -1,0 +1,315 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #eeeeee;
+  scroll-behavior: smooth;
+}
+/*------------global-----------*/
+.container {
+  max-width: 85%;
+  margin: auto;
+}
+.flexSB {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 20px;
+}
+.icon {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #1eb2a6;
+  transition: 0.5s;
+}
+.icon:hover {
+  cursor: pointer;
+  background-color: #1eb2a6;
+  color: #fff;
+}
+a {
+  text-decoration: none;
+}
+li {
+  list-style-type: none;
+}
+/* p {
+  font-size: inherit !important;
+} */
+
+.row {
+  width: 50%;
+}
+.button__custom {
+  padding: 17px 30px;
+  background-color: #fff;
+  color: #1eb2a6;
+  font-weight: 600;
+  border: none;
+  margin: 30px 10px 0 0;
+  border-radius: 3px;
+  cursor: pointer;
+  box-shadow: 0 24px 36px -11px rgb(0 0 0 / 9%);
+  transition: 0.5s;
+}
+button i {
+  margin-left: 20px;
+}
+button:hover {
+  box-shadow: none;
+}
+.primary-btn {
+  background-color: #1eb2a6;
+  color: #fff;
+}
+
+/*------------global-----------*/
+#heading {
+  text-align: center;
+  padding: 40px 0;
+}
+#heading h3 {
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #1eb2a6;
+  text-transform: uppercase;
+}
+#heading h1 {
+  font-size: 45px;
+  margin: 20px 0;
+  text-transform: capitalize;
+}
+p {
+  line-height: 30px;
+  font-size: 18px;
+}
+
+.back {
+  background-image: url("../public/images/back.webp");
+  background-size: cover;
+  background-attachment: fixed;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100vh;
+  padding-top: 30%;
+  padding-right: 50px;
+  color: #fff;
+  text-align: center;
+}
+.back h1 {
+  font-size: 100px;
+  font-weight: 400;
+}
+.back h2 {
+  font-weight: 500;
+  font-size: 17px;
+  text-transform: uppercase;
+}
+.margin {
+  margin-top: 640px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 30px;
+}
+.flex {
+  display: flex;
+}
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 30px;
+}
+.outline-btn-custom {
+  margin: 0;
+  padding: 10px 12px;
+  box-shadow: none;
+  border: 2px solid #1eb2a6;
+  width: 100%;
+  transition: 0.5s;
+}
+.outline-btn-custom:hover {
+  background-color: #1eb2a6;
+  color: #fff;
+}
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 10px;
+}
+.padding {
+  padding: 80px 0;
+}
+.shadow {
+  box-shadow: 0 5px 25px -2px rgb(0 0 0 / 6%);
+  background-color: #fff;
+}
+@media screen and (max-width: 768px) {
+  .grid3,
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .awrapper .box {
+    padding: 20px 0 !important;
+    color: #1eb2a6;
+  }
+
+  .back {
+    background-position: center;
+    padding-top: 50%;
+    height: 80vh;
+  }
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.flappable .flashcard-front {
+  display: legacy;
+  animation: rotateXX .5s ease;
+}
+
+.no-flappable .flashcard-back {
+  display: flex;
+  animation: rotateXX 1s ease;
+}
+
+@keyframes rotateXX {
+  from {
+    transform: rotateY(90deg);
+  }
+  to {
+    transform: rotateY(0deg);
+  }
+}
+
+
+.no-flappable .flashcard-front,
+.flappable .flashcard-back {
+  display: none;
+}
+
+
+/* Tool Support */
+abbr {
+  position: relative;
+}
+
+abbr[data-title]:hover::after {
+  position: absolute;
+  bottom: -36px;
+  z-index: 1000;
+  width: max-content;
+  right: 0;
+  display: block;
+  padding: .8em;
+  font-size: 11px;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #949594;
+  content: attr(data-title);
+}
+
+/* Chatbox */
+.show {
+  transform: rotate(90deg);
+}
+
+.show>.show-chatbox-btn,
+.hidden-btn>.close-chatbox-btn {
+  pointer-events: none;
+  display: none;
+  opacity: 0;
+}
+
+.show>.close-chatbox-btn,
+.hidden-btn>.show-chatbox-btn {
+  display: inline-block;
+  opacity: 1;
+  pointer-events: all;
+}
+
+.show-chatbox.chatbox {
+  opacity: 1;
+  pointer-events: all;
+  transform: scale(1);
+}
+
+.chatbox :where(ul, textarea)::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatbox :where(ul, textarea)::-webkit-scrollbar-track {
+  background: #fff;
+  border-radius: 25px;
+}
+
+.chatbox :where(ul, textarea)::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 25px;
+}
+
+.input-comment::-webkit-scrollbar {
+  width: 0;
+}
+
+p.error {
+  color: #721c24;
+  background: #f8d7da;
+}
+
+
+
+.animate-charcter
+{
+  background-image: linear-gradient(
+    -225deg,
+    #231557 0%,
+    #44107a 29%,
+    #ff1361 67%,
+    #fff800 100%
+  );
+  background-size: auto auto;
+  background-clip: border-box;
+  background-size: 200% auto;
+  color: #fff;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 10s linear infinite;
+  display: inline-block;
+      font-size: 40px;
+}
+
+@keyframes textclip {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.infinite-scroll-component__outerdiv{
+  display: inline-block;
+}
+
+.infinite-scroll-component__outerdiv:has(.display-block){
+  display: block;
+}
+
+.infinite-scroll-component {
+  overflow: hidden!important;
+}

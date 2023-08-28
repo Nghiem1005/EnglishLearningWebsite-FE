@@ -1,0 +1,196 @@
+import React, { useState, useEffect } from "react";
+import TableGrid from "../../components/TableGrid";
+import { Header } from "../../components";
+import { Link, useParams } from "react-router-dom";
+import PracticeDetailShow from "./PracticeDetailShow";
+import { useAuth } from "../../contexts/authProvider";
+import { useQueryCustom } from "../../hooks/useQueryCustom";
+import { thunkCourseTypes } from "../../constants/thunkTypes";
+import { courseService } from "../../services/course";
+import { lessonService } from "../../services/lesson";
+import ButtonMainAction from "../../components/Button/ButtonMainAction";
+import { BsTrash } from "react-icons/bs";
+import { toast } from "react-toastify";
+import DeleteLesson from "./Delete/DeleteLesson";
+import { useLocationQuery } from "../../hooks";
+
+const LessonList = () => {
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [isShowDetail, setIsShowDetail] = useState(false);
+  const [dataShowDetail, setDataShowDetail] = useState({});
+  const [courseId, setCourseId] = useState(null);
+  const [pageSize, setPageSize] = useState({ size: 10, page: 1 });
+  const [dataLessons, setDataLessons] = useState([]);
+  const query = useLocationQuery();
+  const code = query.get("code");
+  const auth = useAuth();
+  const {
+    isLoading: isLoadingCourses,
+    data: dataCourses,
+    refetch: r1,
+  } = useQueryCustom(thunkCourseTypes.GETALL_COURSE, () =>
+    courseService.getAllCourse({
+      teacherId: auth.user.id,
+      size: 1000,
+      page: 1,
+    })
+  );
+
+  useEffect(() => {
+    if (code) {
+      localStorage.setItem("code_teacher", JSON.stringify(code));
+    }
+  }, [code]);
+
+  useEffect(() => {
+    if (dataCourses) {
+      setCourseId(dataCourses?.data?.data[0]?.id);
+    }
+  }, [dataCourses]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const controller = new AbortController();
+      if (courseId) {
+        const { data } = await lessonService.getAllLessonByCourse({
+          courseId: courseId,
+          page: 1,
+          size: 1000,
+          option: { signal: controller.signal },
+        });
+        setDataLessons(data.data);
+        controller.abort();
+      }
+    };
+    fetch();
+  }, [courseId]);
+
+  const columns = [
+    {
+      field: "id",
+      headerAlign: "center",
+      headerName: "Mã tiết học",
+      align: "center",
+    },
+    {
+      field: "name",
+      headerName: "Tên tiết học",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "courseName",
+      headerName: "Khóa học",
+      headerAlign: "center",
+      align: "center",
+      width: 200,
+    },
+    {
+      field: "teacherName",
+      headerName: "Giảng viên phụ trách",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 300,
+      renderCell: (params) => {
+        return (
+          <div className="flex items-center gap-x-2">
+            <span
+              className="px-3 py-1 place-content-center
+              bg-cyan-700 text-white rounded-[8px] cursor-pointer"
+              onClick={() => handleRowClick(params)}
+            >
+              Chi tiết
+            </span>
+            <span
+              className="cursor-pointer"
+              onClick={() => handleDelete(params)}
+            >
+              <BsTrash className="text-red-600 w-8 h-8" />
+            </span>
+          </div>
+        );
+      },
+      headerAlign: "center",
+      align: "center",
+    },
+  ];
+
+  const handleDelete = async (params) => {
+    const code = JSON.parse(localStorage.getItem("code_teacher"));
+    if (code) {
+      const { data } = await lessonService.deleteLesson({
+        lessonId: params.row.id,
+        code,
+      });
+      if (data.status === "OK") {
+        
+        toast.success("Xóa lesson thành công!");
+      } else {
+        toast.error("Có lỗi!");
+      }
+    } else {
+      setIsShowModal(true);
+    }
+  };
+
+  const handleRowClick = (params) => {
+    setDataShowDetail(params.row);
+    setIsShowDetail(true);
+  };
+
+  if (isLoadingCourses) return;
+  return (
+    <div className="relative h-full">
+      <div className="m-6 md:m-4 h-full mt-24 p-2 md:p-10 bg-white rounded-3xl">
+        <Header title="Tiết học" />
+        <div className="flex items-center justify-between w-full mt-1 mb-4">
+          <label className="w-6/12 md:w-4/12 text-sm font-medium text-gray-700 flex md:flex-row flex-col gap-x-3 items-start md:items-center">
+            Khóa học:
+            <select
+              id="category"
+              className={`w-9/12 md:w-9/12 rounded-md border border-gray-300 bg-white py-2 px-2 shadow-sm focus:border-[${"currentColor"}] focus:ring-[${"currentColor"}] focus:outline-none sm:text-sm`}
+              onChange={(e) => setCourseId(e.target.value)}
+              defaultValue={"default"}
+            >
+              <option value="default" disabled>
+                Chọn khóa học
+              </option>
+              {dataCourses?.data?.data?.map((item) => {
+                return (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                );
+              })}
+            </select>
+          </label>
+          <Link to={"/lesson/create"}>
+            <ButtonMainAction content={"Thêm tiết học"} />
+          </Link>
+        </div>
+        <TableGrid
+          data={dataLessons}
+          columns={columns}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
+          getRowId={(row) => row.id}
+        />
+        {isShowDetail ? (
+          <PracticeDetailShow
+            data={dataShowDetail}
+            setIsShowDetail={setIsShowDetail}
+          />
+        ) : null}
+      </div>
+      <DeleteLesson isShowModal={isShowModal} setIsShowModal={setIsShowModal} />
+    </div>
+  );
+};
+
+export default LessonList;

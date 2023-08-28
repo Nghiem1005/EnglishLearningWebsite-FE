@@ -1,0 +1,86 @@
+/*--------head------------*/
+.head {
+  padding: 20px 10px;
+  color: #fff;
+}
+
+.head .icon {
+  margin-left: 10px;
+}
+
+.pesudo-children {
+  position: absolute;
+  top: -20px;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 20px solid rgba(255, 255, 255, 0.5);
+}
+/*--------head------------*/
+/*--------header------------*/
+header {
+  background-color: rgba(255, 255, 255, 0.2);
+  /* margin: 0 30px; */
+}
+header .nav {
+  display: flex !important;
+}
+
+header ul li a, span a {
+  color: #fff;
+  font-weight: 500;
+  transition: 0.5s;
+}
+
+.start {
+  background-color: #edf6f533;
+  padding: 30px;
+  width: 300px;
+  place-content: center;
+  color: #fff;
+  clip-path: polygon(10% 0%, 100% 0, 100% 100%, 0% 100%);
+}
+.start-end {
+  background-color: #1eb2a6;
+  padding: 30px 70px;
+  color: #fff;
+  clip-path: polygon(0% 0%, 90% 0, 100% 100%, 0% 100%);
+}
+.toggle {
+  display: none;
+}
+/*--------header------------*/
+
+@media screen and (max-width: 768px) {
+  .start {
+    clip-path: none;
+  }
+  header {
+    margin: 0;
+    background-color: #1eb2a6;
+    position: relative;
+  }
+  header ul.flexSB {
+    display: none;
+  }
+  header ul li {
+    margin-bottom: 20px;
+  }
+  .toggle {
+    display: block;
+    background: none;
+    color: #fff;
+    font-size: 30px;
+    position: absolute;
+    left: 10px;
+  }
+  .mobile-nav {
+    position: absolute;
+    top: 12vh;
+    left: 0;
+    width: 100%;
+    background-color: #1eb2a6;
+    z-index: 100;
+  }
+}

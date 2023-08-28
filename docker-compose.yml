@@ -1,0 +1,15 @@
+version: '4.0'
+services:
+  english-client:
+    image: english-client:v0.0.1
+    container_name: englist-client
+    working_dir: /usr/app/client
+    build: 
+      context: ./english-client
+      dockerfile: Dockerfile
+    volumes:
+      - ./english-client:/usr/app/client
+    ports:
+      - "3002:3002"
+
+

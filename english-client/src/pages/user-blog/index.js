@@ -1,0 +1,1 @@
+export { default as UserWriteBlog } from './write-blog/WriteBlog';
